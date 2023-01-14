@@ -2,8 +2,8 @@ name: frontend/renovate
 on:
   workflow_dispatch:
     inputs:
-      prConcurrentLimit:
-        description: Renovateが同時に作成するPR数
+      prCount:
+        description: 作成するPRの数
         required: true
         type: number
         default: 10
@@ -13,10 +13,38 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3.3.0
+      - name: Count Renovate PR Count
+        run: |
+          RENOVATE_PR_COUNT=$(gh api graphql -F "query={
+            repository(
+              owner:\"shgtkshruch\",
+              name:\"monorepo-renovate-sample\"
+            ) {
+              pullRequests(first: 100, states: OPEN) {
+                totalCount
+                nodes {
+                  headRefName
+                  author {
+                    login
+                  }
+                }
+              }
+            }
+          }" --jq ".data.repository.pullRequests.nodes \
+          | [ .[] \
+          | select(.headRefName | startswith(\"renovate\")) \
+          | select(.author.login | match(\"shgtkshruch\")) ] \
+          | length")
+
+           echo $RENOVATE_PR_COUNT
+
+           echo "RENOVATE_PR_CONCURRENT_LIMIT=$(( ${{ inputs.prCount }}+$RENOVATE_PR_COUNT ))" >> $GITHUB_ENV
+        env:
+          GH_TOKEN: ${{ github.token }}
       - name: Self-hosted Renovate
         uses: renovatebot/github-action@v34.100.2
         with:
           configurationFile: frontend/renovate.js
           token: ${{ secrets.RENOVATE_TOKEN }}
         env:
-          RENOVATE_PR_CONCURRENT_LIMIT: ${{ inputs.prConcurrentLimit }}
+          RENOVATE_PR_CONCURRENT_LIMIT: ${{ env.RENOVATE_PR_CONCURRENT_LIMIT }}
