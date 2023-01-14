@@ -1,5 +1,7 @@
 name: frontend/renovate
 on:
+  schedule:
+    - cron: '0 8 * * 0'
   workflow_dispatch:
     inputs:
       prCount:
@@ -13,6 +15,8 @@ env:
   BRANCH_PREFIX: renovate
   # Renovate が作成する PR の Author
   PR_AUTHOR: shgtkshruch
+  # 作成する PR の数(cron 用の設定)
+  PR_COUNT: 10
 
 jobs:
   renovate:
@@ -43,7 +47,7 @@ jobs:
           | select(.author.login | match(\"${{ env.PR_AUTHOR }}\")) ] \
           | length")
 
-           echo "RENOVATE_PR_CONCURRENT_LIMIT=$(( ${{ inputs.prCount }}+$RENOVATE_PR_COUNT ))" >> $GITHUB_ENV
+           echo "RENOVATE_PR_CONCURRENT_LIMIT=$(( ${{ inputs.prCount || env.prCount }}+$RENOVATE_PR_COUNT ))" >> $GITHUB_ENV
         env:
           GH_TOKEN: ${{ github.token }}
       - name: Self-hosted Renovate
