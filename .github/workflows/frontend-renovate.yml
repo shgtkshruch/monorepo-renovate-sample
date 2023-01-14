@@ -20,4 +20,3 @@ jobs:
           token: ${{ secrets.RENOVATE_TOKEN }}
         env:
           RENOVATE_PR_CONCURRENT_LIMIT: ${{ inputs.prConcurrentLmit }}
-          RENOVATE_DRY_RUN: full
