@@ -6,8 +6,8 @@
     ":timezone(Asia/Tokyo)",
     ":enableVulnerabilityAlertsWithLabel(security)",
   ],
+  ignorePresets: [":prHourlyLimit2", "prConcurrentLimit10"],
   onboarding: false,
   requireConfig: "optional",
-  loglevel: "debug",
   repositories: ["shgtkshruch/monorepo-renovate-sample"],
 }
