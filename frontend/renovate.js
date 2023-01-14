@@ -1,13 +1,13 @@
-{
-  $schema: "https://docs.renovatebot.com/renovate-schema.json",
+module.exports = {
   extends: [
     "config:base",
     ":disableDependencyDashboard",
     ":timezone(Asia/Tokyo)",
     ":enableVulnerabilityAlertsWithLabel(security)",
   ],
-  ignorePresets: [":prHourlyLimit2", "prConcurrentLimit10"],
+  ignorePresets: [":prHourlyLimit2", ":prConcurrentLimit10"],
   onboarding: false,
   requireConfig: "optional",
+  prConcurrentLimit: process.env.RENOVATE_PR_CONCURRENT_LIMIT,
   repositories: ["shgtkshruch/monorepo-renovate-sample"],
-}
+};
