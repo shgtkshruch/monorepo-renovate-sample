@@ -36,7 +36,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
       - name: Self-hosted Renovate
-        uses: renovatebot/github-action@v34.100.2
+        uses: renovatebot/github-action@v34.102.0
         with:
           configurationFile: frontend/renovate.js
           token: ${{ secrets.RENOVATE_TOKEN }}
