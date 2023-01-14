@@ -9,10 +9,4 @@
   onboarding: false,
   requireConfig: "optional",
   repositories: ["shgtkshruch/monorepo-renovate-sample"],
-  includePaths: ["./frontend"],
-  packageRules: [
-    {
-      matchPaths: ["frontend/**"],
-    },
-  ],
 }
