@@ -17,8 +17,8 @@ jobs:
         run: |
           RENOVATE_PR_COUNT=$(gh api graphql -F "query={
             repository(
-              owner:\"shgtkshruch\",
-              name:\"monorepo-renovate-sample\"
+              owner: \"${{ github.repository_owner }}\",
+              name: \"${{ github.event.repository.name }}\"
             ) {
               pullRequests(first: 100, states: OPEN) {
                 totalCount
