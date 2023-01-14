@@ -1,14 +1,13 @@
 {
-  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
+  $schema: "https://docs.renovatebot.com/renovate-schema.json",
+  extends: [
     "config:base",
-    ":disableDependencyDashboard", 
+    ":disableDependencyDashboard",
     ":timezone(Asia/Tokyo)",
     ":enableVulnerabilityAlertsWithLabel(security)",
   ],
-  "onboarding": false,
-  "repositories": ["shgtkshruch/monorepo-renovate-sample"],
-  "includePaths": [
-    "./frontend"
-  ],
+  onboarding: false,
+  requireConfig: false,
+  repositories: ["shgtkshruch/monorepo-renovate-sample"],
+  includePaths: ["./frontend"],
 }
