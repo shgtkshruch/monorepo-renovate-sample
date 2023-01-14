@@ -3,17 +3,24 @@ on:
   workflow_dispatch:
     inputs:
       prCount:
-        description: 作成するPRの数
+        description: 作成する PR の数
         required: true
         type: number
         default: 10
+
+env:
+  # Renovate が作成するブランチのプレフィックス
+  BRANCH_PREFIX: renovate
+  # Renovate が作成する PR の Author
+  PR_AUTHOR: shgtkshruch
+
 jobs:
   renovate:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v3.3.0
-      - name: Count Renovate PR Count
+      - name: Set RENOVATE_PR_CONCURRENT_LIMIT
         run: |
           RENOVATE_PR_COUNT=$(gh api graphql -F "query={
             repository(
@@ -32,11 +39,9 @@ jobs:
             }
           }" --jq ".data.repository.pullRequests.nodes \
           | [ .[] \
-          | select(.headRefName | startswith(\"renovate\")) \
-          | select(.author.login | match(\"shgtkshruch\")) ] \
+          | select(.headRefName | startswith(\"${{ env.BRANCH_PREFIX }}\")) \
+          | select(.author.login | match(\"${{ env.PR_AUTHOR }}\")) ] \
           | length")
-
-           echo $RENOVATE_PR_COUNT
 
            echo "RENOVATE_PR_CONCURRENT_LIMIT=$(( ${{ inputs.prCount }}+$RENOVATE_PR_COUNT ))" >> $GITHUB_ENV
         env:
