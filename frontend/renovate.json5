@@ -7,7 +7,7 @@
     ":enableVulnerabilityAlertsWithLabel(security)",
   ],
   onboarding: false,
-  requireConfig: false,
+  requireConfig: "optional",
   repositories: ["shgtkshruch/monorepo-renovate-sample"],
   includePaths: ["./frontend"],
 }
