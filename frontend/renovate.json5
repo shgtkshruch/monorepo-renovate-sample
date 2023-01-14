@@ -8,5 +8,6 @@
   ],
   onboarding: false,
   requireConfig: "optional",
+  loglevel: "debug",
   repositories: ["shgtkshruch/monorepo-renovate-sample"],
 }
